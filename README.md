@@ -1,7 +1,4 @@
-# Fault diagnosis.
-
-![Untitled design](https://github.com/ShreyashChacharkar/Fault-diagnosis/assets/78749032/49561e31-b6e1-47f4-ad5e-d85da5cc7dd5)
-
+# Fault Analysis.
 
 ## Table of Contents
 
@@ -39,14 +36,6 @@ For data analysis and model training refer
 ![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)
 ![JS](https://img.shields.io/badge/logo-javascript-blue?logo=javascript)
 
-
-## Installation
-
-```bash
-# Example installation steps
-git clone [https://github.com/ShreyashChacharkar/Fault-diagnosis](https://github.com/ShreyashChacharkar/Fault-diagnosis)
-pip install -r requirements.txt
-```
 
 ## Usage
 
