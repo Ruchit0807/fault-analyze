@@ -1,0 +1,108 @@
+{% extends "layout.html" %}
+{% block content%}   
+<form action="/predict" method="post">
+    <label for="model">Select a  model:</label>
+    <select id="model" name="model">
+        <option value="None">None</option>
+        <option value="XGBoost">XGBoost</option>
+        <option value="Logistic Regression">Logistic Regression</option>
+        <option value="Decision Tree">Decision Tree</option>
+        <option value="Random Forest">Random Forest</option>
+        <option value="Naive Bayes">Naive Bayes</option>
+        <option value="K-Nearest Neighbors">K-Nearest Neighbors</option>
+    </select><br><br>
+    <input type="hidden" name="input_data" value="{{value}}">
+    <div class="scrollable-table">
+        <table border="1">
+            <thead>
+                <tr>
+                    {% for col in dataframe.columns %}
+                        <th>{{ col }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+            {% for row in dataframe.itertuples() %}
+                <tr>
+                    {% for value in row[1:] %}       
+                        <td>
+                            {% if value == 'predict' %}
+                            <button class="predict-button" type="button" onclick="predictFunction(this)">Select</button>
+                            {% else %}
+                                {{ value }}
+                            {% endif %}
+                        </td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </tbody>
+        </table>
+    </div><br>
+    <input type="submit" value="Predict">
+</form><br>
+<div class="prediction-section">
+    {% if result %}
+    <p>Prediction for selected data is Fault class <span class="text">{{ result }}</span></p>
+
+    <div class="activity">
+        <div class="title">
+            <i class="uil uil-clock-three"></i>
+            <span class="text">Explainable AI</span>
+        </div>
+    </div>
+    <h2>Local Explainer</h2>
+    <div class="tabs">
+        <button class="tablinks" onclick="openTab(event, 'tab3')">Shap</button>
+        <button class="tablinks" onclick="openTab(event, 'tab4')">Lime</button>
+    </div>
+
+    <div id="tab3" class="tabcontent">
+        <p>Shap value of Fault class <span class="text">{{ result }}</span> is maximum. Hence it is our prediction</p><br>
+
+        {% for i in shap_local.keys() %}
+        <p>Shap Force Plot of Fault class  <span class="text">{{i}}</span> for the prediction</p>
+            {{shap_local[i]|safe}}
+        {% endfor %}
+        
+    </div>
+
+    <div id="tab4" class="tabcontent">
+            {{ data|safe }}
+    </div> <br><br>
+
+    <h2>Global Explainer</h2>
+        <div class="tabs">
+            <button class="tablinks" onclick="openTab(event, 'tab1')">Shap</button>
+        </div>
+
+        <div id="tab1" class="tabcontent">
+            <img src="{{shap_global}}" alt="Description of the image">
+        </div>
+
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    
+    {% else %}
+        <p>Model and row for prediction not selected</p>
+        <div class="activity">
+            <div class="title">
+                <i class="uil uil-clock-three"></i>
+                <span class="text">Explainable AI</span>
+            </div>
+            <h2>Local Explainer</h2>
+            <p>Select Model and row for prediction</p><br><br>
+        </div>
+        <h2>Global Explainer</h2>
+        <form action="#">
+            <div class="tabs">
+                <button class="tablinks" onclick="openTab(event, 'tab1')">Shap</button>
+            </div>
+
+            <div id="tab1" class="tabcontent">
+                <h2>Tab 1 Content</h2>
+            </div>
+        </form>
+    </div>
+    {% endif %}
+    
+{% endblock content %}
